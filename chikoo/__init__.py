@@ -1,0 +1,78 @@
+# Copyright (c) 2025 marine
+# Licensed under the MIT License.
+# This file is part of chikooMusic
+#CHIKOO-CODER
+
+import time
+import logging
+import static_ffmpeg
+static_ffmpeg.add_paths()
+from logging.handlers import RotatingFileHandler
+
+logging.basicConfig(
+    format="[%(asctime)s - %(levelname)s] - %(name)s: %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
+    handlers=[
+        RotatingFileHandler("log.txt", maxBytes=10485760, backupCount=5),
+        logging.StreamHandler(),
+    ],
+    level=logging.INFO,
+)
+logging.getLogger("httpx").setLevel(logging.ERROR)
+logging.getLogger("ntgcalls").setLevel(logging.CRITICAL)
+logging.getLogger("pymongo").setLevel(logging.ERROR)
+logging.getLogger("pyrogram").setLevel(logging.ERROR)
+logging.getLogger("pytgcalls").setLevel(logging.ERROR)
+logger = logging.getLogger(__name__)
+
+
+__version__ = "3.0.1"
+
+from config import Config
+
+config = Config()
+config.check()
+tasks = []
+boot = time.time()
+
+from chikoo.core.bot import Bot
+app = Bot()
+
+from chikoo.core.dir import ensure_dirs
+ensure_dirs()
+
+from chikoo.core.userbot import Userbot
+userbot = Userbot()
+
+from chikoo.core.mongo import MongoDB
+db = MongoDB()
+
+from chikoo.core.lang import Language
+lang = Language()
+
+from chikoo.core.telegram import Telegram
+from chikoo.core.youtube import YouTube
+tg = Telegram()
+yt = YouTube()
+
+from chikoo.helpers import Queue
+queue = Queue()
+
+from chikoo.core.calls import TgCall
+anon = TgCall()
+
+
+async def stop() -> None:
+    logger.info("Stopping...")
+    for task in tasks:
+        task.cancel()
+        try:
+            await task
+        except:
+            pass
+
+    await app.exit()
+    await userbot.exit()
+    await db.close()
+
+    logger.info("Stopped.\n")
