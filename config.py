@@ -48,7 +48,11 @@ class Config:
 
     @property
     def STATS_IMG(self):
-        return "pics/ChikooMusic.png"
+        import os
+        for ext in [".jpg", ".png", ".jpeg"]:
+            if os.path.exists(f"pics/ChikooMusic{ext}"):
+                return f"pics/ChikooMusic{ext}"
+        return self.START_IMG
 
     @property
     def RANDOM_PIC(self):
@@ -57,7 +61,7 @@ class Config:
             pics = [
                 f"pics/{x}" for x in os.listdir("pics") 
                 if x.endswith((".jpg", ".png", ".jpeg", ".mp4", ".gif", ".webm", ".mkv"))
-                and x.lower() != "chikoomusic.png"
+                and not x.lower().startswith("chikoomusic.")
             ]
             return random.choice(pics) if pics else self.START_IMG
         except Exception:
