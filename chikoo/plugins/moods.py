@@ -60,22 +60,25 @@ MOOD_SONGS = {
         "Prateek Kuhad – Kasoor", "Prateek Kuhad – Cold/Mess", "OAFF & Savera – Doobey",
         "Taba Chake – Walk With Me", "Taba Chake – Aao Chalein", "Arijit Singh – Shayad",
         "Arijit Singh – Phir Le Aaya Dil", "Arijit Singh – Channa Mereya", "Arijit Singh – Agar Tum Saath Ho",
-        "Arijit Singh – Satranga", "Bairan", "Inaam"
+        "Arijit Singh – Satranga", "Bairan", "Inaam", "Darshan Raval - Mujhe Peene Do", 
+        "Mohit Chauhan - Tune Jo Na Kaha", "Zaroor", "Khat", "Tumko Kya Pata", "Pehle Bhi Main"
     ],
     "hindi_love": [
         "Heeriye", "Chaleya", "Apna Bana Le", "Ranjha", "Kesariya",
         "O Maahi", "Kaise Hua", "Tera Ban Jaunga", "Raataan Lambiyan",
-        "Tere Hawaale", "Tum Se Hi", "Tera Hone Laga Hoon"
+        "Tere Hawaale", "Tum Se Hi", "Tera Hone Laga Hoon", "Sajni", "Ve Haaniyaan", "Mera Mann"
     ],
     "hindi_party": [
         "Tauba Tauba", "Kala Chashma", "Naach Meri Rani", "Bijlee Bijlee",
         "Jugnu", "Gallan Goodiyaan", "Ghungroo", "Nashe Si Chadh Gayi",
-        "Bom Diggy", "Kar Gayi Chull", "Illegal Weapon 2.0", "What Jhumka?"
+        "Bom Diggy", "Kar Gayi Chull", "Illegal Weapon 2.0", "What Jhumka?",
+        "Udi Udi Jaye", "Illuminati", "Lutt Putt Gaya"
     ],
     "hindi_indie": [
         "Husn", "Bairan", "Gul", "Baarishein", "Alag Aasmaan",
         "Kasoor", "Riha", "Choo Lo", "Kho Gaye Hum Kahan",
-        "Iktara", "Aaftab", "Aise Kyun"
+        "Iktara", "Aaftab", "Aise Kyun", "Kami", "Aarzu", "Bikhra", 
+        "Pehli Dafa", "Ishq", "Paro", "Zulfein"
     ],
     "taste_match": [
         "Tom Odell – Another Love", "Benson Boone – Beautiful Things",
