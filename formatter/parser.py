@@ -43,12 +43,12 @@ async def parse(
         # Step 5: Parse HTML (Placeholder for any future sanitization)
         text = parse_html(text)
 
-        # Step 6: Build Entities using Pyrogram's HTML Parser
-        final_text, entities = await build_entities(text)
+        # Skip custom entity building to avoid _client bug on MessageEntity
+        # final_text, entities = await build_entities(text, client)
         
         return ParsedMessage(
-            text=final_text,
-            entities=entities,
+            text=text,
+            entities=None,
             reply_markup=reply_markup
         )
     except Exception as e:

@@ -45,8 +45,7 @@ async def broadcast_to_targets(client, targets, query, y=None, x=None, pin=False
                         kwargs["reply_markup"] = parsed.reply_markup
                     if parsed and parsed.text and not is_sticker:
                         kwargs["caption"] = parsed.text + footer
-                        if parsed.entities:
-                            kwargs["caption_entities"] = parsed.entities
+                        kwargs["parse_mode"] = enums.ParseMode.HTML
                     m = await client.copy_message(target_id, y, x, **kwargs)
                 else:
                     m = await client.forward_messages(target_id, y, x)
@@ -55,7 +54,7 @@ async def broadcast_to_targets(client, targets, query, y=None, x=None, pin=False
                     m = await client.send_message(
                         target_id, 
                         text=parsed.text + footer,
-                        entities=parsed.entities,
+                        parse_mode=enums.ParseMode.HTML,
                         reply_markup=parsed.reply_markup
                     )
                 else:
