@@ -21,7 +21,19 @@ async def save_broadcast(_, message: types.Message):
     media = None
     
     if message.reply_to_message:
-        raw_text = message.reply_to_message.text or message.reply_to_message.caption
+        raw_text = message.reply_to_message.text or message.reply_to_message.caption or ""
+        
+        # Extract inline keyboard buttons and convert to Rose format
+        if message.reply_to_message.reply_markup and hasattr(message.reply_to_message.reply_markup, "inline_keyboard"):
+            for row in message.reply_to_message.reply_markup.inline_keyboard:
+                buttons = []
+                for btn in row:
+                    target = btn.url or btn.callback_data or btn.switch_inline_query or str(btn.user_id) if btn.user_id else ""
+                    if target:
+                        buttons.append(f"[{btn.text}, {target}]")
+                if buttons:
+                    raw_text += f"\n~ {' | '.join(buttons)}"
+                    
         if message.reply_to_message.photo:
             media = {"type": "photo", "file_id": message.reply_to_message.photo.file_id}
         elif message.reply_to_message.video:
@@ -120,7 +132,9 @@ async def load_broadcast(_, message: types.Message):
     media = saved.get("media")
 
     try:
-        text = f"**[Loaded: {name}]**\n\n" + parsed.text
+        await message.reply_text(f"**[Loaded: {name}]**")
+        
+        text = parsed.text
         if media:
             if media["type"] == "photo":
                 await message.reply_photo(photo=media["file_id"], caption=text, reply_markup=reply_markup, caption_entities=parsed.entities)
@@ -180,7 +194,19 @@ async def schedule_broadcast(_, message: types.Message):
         raw_text = saved["text"]
         media = saved.get("media")
     elif message.reply_to_message:
-        raw_text = message.reply_to_message.text or message.reply_to_message.caption
+        raw_text = message.reply_to_message.text or message.reply_to_message.caption or ""
+        
+        # Extract inline keyboard buttons and convert to Rose format
+        if message.reply_to_message.reply_markup and hasattr(message.reply_to_message.reply_markup, "inline_keyboard"):
+            for row in message.reply_to_message.reply_markup.inline_keyboard:
+                buttons = []
+                for btn in row:
+                    target = btn.url or btn.callback_data or btn.switch_inline_query or str(btn.user_id) if btn.user_id else ""
+                    if target:
+                        buttons.append(f"[{btn.text}, {target}]")
+                if buttons:
+                    raw_text += f"\n~ {' | '.join(buttons)}"
+                    
         if message.reply_to_message.photo:
             media = {"type": "photo", "file_id": message.reply_to_message.photo.file_id}
         elif message.reply_to_message.video:
