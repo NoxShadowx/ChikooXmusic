@@ -55,6 +55,76 @@ class Bot(pyrogram.Client):
             else:
                 await self.send_photo(self.logger, photo=pic, caption=bot_started_text, reply_markup=key)
             get = await self.get_chat_member(self.logger, self.id)
+            
+            # Set bot commands
+            from pyrogram.types import BotCommand, BotCommandScopeDefault, BotCommandScopeAllChatAdministrators, BotCommandScopeChat
+            
+            # Commands for everyone
+            await self.set_bot_commands(
+                [
+                    BotCommand("play", "Play music in voice chat"),
+                    BotCommand("vplay", "Play video in voice chat"),
+                    BotCommand("queue", "Check the queued tracks"),
+                    BotCommand("ping", "Check bot status"),
+                    BotCommand("lang", "Change bot language"),
+                    BotCommand("help", "Show help menu"),
+                    BotCommand("autoplay", "Toggle Auto Play Moods")
+                ],
+                scope=BotCommandScopeDefault()
+            )
+            
+            # Commands for Group Admins (inherits default commands too if we don't overwrite them fully, wait, we must provide all commands for that scope)
+            await self.set_bot_commands(
+                [
+                    BotCommand("play", "Play music in voice chat"),
+                    BotCommand("vplay", "Play video in voice chat"),
+                    BotCommand("queue", "Check the queued tracks"),
+                    BotCommand("ping", "Check bot status"),
+                    BotCommand("lang", "Change bot language"),
+                    BotCommand("help", "Show help menu"),
+                    BotCommand("autoplay", "Toggle Auto Play Moods"),
+                    BotCommand("pause", "Pause playback"),
+                    BotCommand("resume", "Resume playback"),
+                    BotCommand("skip", "Skip current track"),
+                    BotCommand("stop", "Stop playback"),
+                    BotCommand("seek", "Seek current track"),
+                    BotCommand("auth", "Add authorized users"),
+                    BotCommand("unauth", "Remove authorized users")
+                ],
+                scope=BotCommandScopeAllChatAdministrators()
+            )
+            
+            # Commands for Owner
+            await self.set_bot_commands(
+                [
+                    BotCommand("play", "Play music in voice chat"),
+                    BotCommand("vplay", "Play video in voice chat"),
+                    BotCommand("queue", "Check the queued tracks"),
+                    BotCommand("ping", "Check bot status"),
+                    BotCommand("lang", "Change bot language"),
+                    BotCommand("help", "Show help menu"),
+                    BotCommand("autoplay", "Toggle Auto Play Moods"),
+                    BotCommand("pause", "Pause playback"),
+                    BotCommand("resume", "Resume playback"),
+                    BotCommand("skip", "Skip current track"),
+                    BotCommand("stop", "Stop playback"),
+                    BotCommand("seek", "Seek current track"),
+                    BotCommand("auth", "Add authorized users"),
+                    BotCommand("unauth", "Remove authorized users"),
+                    BotCommand("preview", "Interactive message builder"),
+                    BotCommand("broadcast", "Broadcast a message"),
+                    BotCommand("tagall", "Beautifully mention all members"),
+                    BotCommand("cancel", "Stop tagging members"),
+                    BotCommand("restart", "Restart the bot"),
+                    BotCommand("eval", "Execute Python code"),
+                    BotCommand("logs", "Send the log file"),
+                    BotCommand("logger", "Enable/disable the logger"),
+                    BotCommand("addsudo", "Add a user to sudo list"),
+                    BotCommand("rmsudo", "Remove a user from sudo list")
+                ],
+                scope=BotCommandScopeChat(chat_id=self.owner)
+            )
+            
         except Exception as ex:
             raise SystemExit(f"Bot has failed to access the log group: {self.logger}\nReason: {ex}")
 

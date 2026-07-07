@@ -108,11 +108,25 @@ async def mood_menu_cb(_, callback_query: types.CallbackQuery):
             text=text,
             reply_markup=inline.mood_markup()
         )
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"Failed to send mood menu: {e}")
 
+@app.on_message(filters.command(["autoplay"]) & filters.group & ~app.bl_users)
+async def autoplay_command(_, message: types.Message):
+    text = (
+        "🎭 **Auto Play Moods**\n\n"
+        "Select a vibe below, and I will automatically pick and play a random song from that category!"
+    )
+    
+    try:
+        await message.reply_text(
+            text=text,
+            reply_markup=inline.mood_markup()
+        )
+    except Exception as e:
+        print(f"Failed to send mood menu: {e}")
 
-@app.on_callback_query(filters.regex(r"^play_mood (.*)$"))
+@app.on_callback_query(filters.regex(r"^play_mood (.*)$") & ~app.bl_users)
 async def play_mood_cb(client, callback_query: types.CallbackQuery):
     mood = callback_query.matches[0].group(1)
     
