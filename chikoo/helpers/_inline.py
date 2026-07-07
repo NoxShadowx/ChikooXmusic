@@ -71,7 +71,7 @@ class Inline:
 
 
     def help_markup(
-        self, _lang: dict, back: bool = False
+        self, _lang: dict, back: bool = False, sudoer: bool = False
     ) -> types.InlineKeyboardMarkup:
         if back:
             rows = [
@@ -81,10 +81,19 @@ class Inline:
                 ]
             ]
         else:
-            cbs = ["admins", "auth", "blist", "lang", "ping", "play", "queue", "stats", "sudo"]
+            cb_indices = {
+                "admins": 0, "auth": 1, "blist": 2, "lang": 3, 
+                "ping": 4, "play": 5, "queue": 6, "stats": 7, 
+                "sudo": 8, "owner": 9
+            }
+            if sudoer:
+                cbs = ["admins", "auth", "blist", "lang", "ping", "play", "queue", "stats", "sudo", "owner"]
+            else:
+                cbs = ["play", "queue", "ping", "lang", "auth"]
+                
             buttons = [
-                self.ikb(text=_lang[f"help_{i}"], callback_data=f"help {cb}", style=ButtonStyle.PRIMARY)
-                for i, cb in enumerate(cbs)
+                self.ikb(text=_lang.get(f"help_{cb_indices[cb]}", cb.capitalize()), callback_data=f"help {cb}", style=ButtonStyle.PRIMARY)
+                for cb in cbs
             ]
             rows = [buttons[i : i + 3] for i in range(0, len(buttons), 3)]
             rows.append(
