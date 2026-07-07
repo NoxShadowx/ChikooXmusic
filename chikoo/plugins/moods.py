@@ -122,12 +122,15 @@ async def play_mood_cb(client, callback_query: types.CallbackQuery):
 
     await callback_query.answer("🎵 Selecting a song for you...", show_alert=True)
     
-    # Select random song
+    # Select all songs for this mood and shuffle them
     if mood == "random":
-        song = random.choice(ALL_SONGS)
+        mood_list = list(ALL_SONGS)
     else:
-        song = random.choice(MOOD_SONGS.get(mood, ALL_SONGS))
+        mood_list = list(MOOD_SONGS.get(mood, ALL_SONGS))
         
+    random.shuffle(mood_list)
+    song = mood_list.pop(0)
+
     # Set the text and command for the play handler to parse
     mock_message = types.Message(
         id=callback_query.message.id,
@@ -149,3 +152,31 @@ async def play_mood_cb(client, callback_query: types.CallbackQuery):
         await play_hndlr(client, mock_message)
     except Exception as e:
         print(f"Error in play_mood_cb: {e}")
+        
+    # Queue the rest of the songs in the background
+    async def queue_remaining(chat_id, mention, songs):
+        from chikoo import yt, queue
+        added = 0
+        for query in songs:
+            try:
+                track = await yt.search(query, 0, video=False)
+                if track:
+                    track.user = mention
+                    queue.add(chat_id, track)
+                    added += 1
+            except Exception:
+                pass
+            await asyncio.sleep(1)
+        if added > 0:
+            from chikoo import app
+            try:
+                await app.send_message(chat_id, f"✅ Successfully queued **{added}** more tracks for this mood!")
+            except:
+                pass
+
+    import asyncio
+    asyncio.create_task(queue_remaining(
+        callback_query.message.chat.id, 
+        callback_query.from_user.mention, 
+        mood_list
+    ))
