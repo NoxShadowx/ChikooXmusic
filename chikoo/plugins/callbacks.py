@@ -116,10 +116,11 @@ async def _controls(_, query: types.CallbackQuery):
         pass
 
 
-@app.on_callback_query(filters.regex(r"^help(_back_start| back| close| \w+)?$") & ~app.bl_users)
+@app.on_callback_query(filters.regex("^help") & ~app.bl_users)
 @lang.language()
 async def _help(_, query: types.CallbackQuery):
     data = query.data.split()
+    is_sudo = query.from_user.id in app.sudoers
 
     if query.data == "help_back_start":
         _text = query.lang["start_pm"].format(query.from_user.first_name, app.name)
@@ -131,12 +132,12 @@ async def _help(_, query: types.CallbackQuery):
     if len(data) == 1:
         return await query.edit_message_text(
             text=query.lang["help_menu"],
-            reply_markup=buttons.help_markup(query.lang)
+            reply_markup=buttons.help_markup(query.lang, sudoer=is_sudo)
         )
 
     if data[1] == "back":
         return await query.edit_message_text(
-            text=query.lang["help_menu"], reply_markup=buttons.help_markup(query.lang)
+            text=query.lang["help_menu"], reply_markup=buttons.help_markup(query.lang, sudoer=is_sudo)
         )
     elif data[1] == "close":
         try:
@@ -146,8 +147,8 @@ async def _help(_, query: types.CallbackQuery):
             pass
 
     await query.edit_message_text(
-        text=query.lang[f"help_{data[1]}"],
-        reply_markup=buttons.help_markup(query.lang, True),
+        text=query.lang.get(f"help_{data[1]}", "Not translated yet."),
+        reply_markup=buttons.help_markup(query.lang, True, sudoer=is_sudo),
     )
 
 
