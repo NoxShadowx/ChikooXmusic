@@ -45,6 +45,8 @@ async def broadcast_to_targets(client, targets, query, y=None, x=None, pin=False
                         kwargs["reply_markup"] = parsed.reply_markup
                     if parsed and parsed.text and not is_sticker:
                         kwargs["caption"] = parsed.text + footer
+                        if parsed.entities:
+                            kwargs["caption_entities"] = parsed.entities
                     m = await client.copy_message(target_id, y, x, **kwargs)
                 else:
                     m = await client.forward_messages(target_id, y, x)

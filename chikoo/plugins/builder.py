@@ -65,6 +65,8 @@ async def preview_message(_, message: types.Message):
                 kwargs["reply_markup"] = reply_markup
             if parsed and parsed.text and not message.reply_to_message.sticker:
                 kwargs["caption"] = parsed.text
+                if parsed.entities:
+                    kwargs["caption_entities"] = parsed.entities
                 
             await message.reply_to_message.copy(
                 message.chat.id,
@@ -73,6 +75,7 @@ async def preview_message(_, message: types.Message):
         else:
             await message.reply_text(
                 text=parsed.text,
+                entities=parsed.entities,
                 reply_markup=reply_markup,
                 disable_web_page_preview=True
             )
