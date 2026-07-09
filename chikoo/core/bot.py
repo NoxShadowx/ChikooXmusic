@@ -64,24 +64,30 @@ class Bot(pyrogram.Client):
                 [
                     BotCommand("play", "Play music in voice chat"),
                     BotCommand("vplay", "Play video in voice chat"),
+                    BotCommand("search", "Search for a track on YouTube"),
                     BotCommand("queue", "Check the queued tracks"),
+                    BotCommand("stats", "Check bot statistics"),
                     BotCommand("ping", "Check bot status"),
                     BotCommand("lang", "Change bot language"),
                     BotCommand("help", "Show help menu"),
+                    BotCommand("settings", "Show playmode settings"),
                     BotCommand("autoplay", "Toggle Auto Play Moods")
                 ],
                 scope=BotCommandScopeDefault()
             )
             
-            # Commands for Group Admins (inherits default commands too if we don't overwrite them fully, wait, we must provide all commands for that scope)
+            # Commands for Group Admins
             await self.set_bot_commands(
                 [
                     BotCommand("play", "Play music in voice chat"),
                     BotCommand("vplay", "Play video in voice chat"),
+                    BotCommand("search", "Search for a track on YouTube"),
                     BotCommand("queue", "Check the queued tracks"),
+                    BotCommand("stats", "Check bot statistics"),
                     BotCommand("ping", "Check bot status"),
                     BotCommand("lang", "Change bot language"),
                     BotCommand("help", "Show help menu"),
+                    BotCommand("settings", "Show playmode settings"),
                     BotCommand("autoplay", "Toggle Auto Play Moods"),
                     BotCommand("pause", "Pause playback"),
                     BotCommand("resume", "Resume playback"),
@@ -89,7 +95,10 @@ class Bot(pyrogram.Client):
                     BotCommand("stop", "Stop playback"),
                     BotCommand("seek", "Seek current track"),
                     BotCommand("auth", "Add authorized users"),
-                    BotCommand("unauth", "Remove authorized users")
+                    BotCommand("unauth", "Remove authorized users"),
+                    BotCommand("authusers", "List authorized users"),
+                    BotCommand("tagall", "Tag all members in the group"),
+                    BotCommand("cancel", "Stop tagging members")
                 ],
                 scope=BotCommandScopeAllChatAdministrators()
             )
@@ -99,10 +108,13 @@ class Bot(pyrogram.Client):
                 [
                     BotCommand("play", "Play music in voice chat"),
                     BotCommand("vplay", "Play video in voice chat"),
+                    BotCommand("search", "Search for a track on YouTube"),
                     BotCommand("queue", "Check the queued tracks"),
+                    BotCommand("stats", "Check bot statistics"),
                     BotCommand("ping", "Check bot status"),
                     BotCommand("lang", "Change bot language"),
                     BotCommand("help", "Show help menu"),
+                    BotCommand("settings", "Show playmode settings"),
                     BotCommand("autoplay", "Toggle Auto Play Moods"),
                     BotCommand("pause", "Pause playback"),
                     BotCommand("resume", "Resume playback"),
@@ -111,13 +123,25 @@ class Bot(pyrogram.Client):
                     BotCommand("seek", "Seek current track"),
                     BotCommand("auth", "Add authorized users"),
                     BotCommand("unauth", "Remove authorized users"),
-                    BotCommand("preview", "Interactive message builder"),
-                    BotCommand("broadcast", "Broadcast a message"),
-                    BotCommand("tagall", "Beautifully mention all members"),
+                    BotCommand("tagall", "Tag all members in the group"),
                     BotCommand("cancel", "Stop tagging members"),
+                    BotCommand("owner", "Show owner menu"),
+                    BotCommand("broadcast", "Broadcast a message"),
+                    BotCommand("save_broadcast", "Save a broadcast message"),
+                    BotCommand("saved_broadcasts", "List saved broadcasts"),
+                    BotCommand("del_broadcast", "Delete a saved broadcast"),
+                    BotCommand("load_broadcast", "Load a saved broadcast"),
+                    BotCommand("schedule_broadcast", "Schedule a broadcast"),
+                    BotCommand("stop_broadcast", "Stop a running broadcast"),
+                    BotCommand("blacklist", "Blacklist a user"),
+                    BotCommand("unblacklist", "Unblacklist a user"),
+                    BotCommand("whitelist", "Whitelist a user"),
+                    BotCommand("addsudo", "Add a sudo user"),
+                    BotCommand("delsudo", "Remove a sudo user"),
+                    BotCommand("listsudo", "List sudo users"),
+                    BotCommand("logger", "Toggle bot logging"),
+                    BotCommand("logs", "Get bot logs"),
                     BotCommand("restart", "Restart the bot"),
-                    BotCommand("eval", "Execute Python code"),
-                    BotCommand("logs", "Send the log file"),
                     BotCommand("logger", "Enable/disable the logger"),
                     BotCommand("addsudo", "Add a user to sudo list"),
                     BotCommand("rmsudo", "Remove a user from sudo list"),
