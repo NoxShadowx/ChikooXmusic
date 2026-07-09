@@ -46,7 +46,7 @@ async def tag_all(_, message: types.Message):
             # Escape HTML characters so it doesn't break the parser
             name = html.escape(name)
             
-            mentions_list.append(f"<a href='tg://user?id={member.user.id}'>{name}</a>")
+            mentions_list.append(f"<a href='tg://openmessage?user_id={member.user.id}'>{name}</a>")
             count += 1
             
             if count == 5:

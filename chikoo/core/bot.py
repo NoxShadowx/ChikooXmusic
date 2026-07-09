@@ -120,7 +120,9 @@ class Bot(pyrogram.Client):
                     BotCommand("logs", "Send the log file"),
                     BotCommand("logger", "Enable/disable the logger"),
                     BotCommand("addsudo", "Add a user to sudo list"),
-                    BotCommand("rmsudo", "Remove a user from sudo list")
+                    BotCommand("rmsudo", "Remove a user from sudo list"),
+                    BotCommand("sudolist", "List all sudo users"),
+                    BotCommand("search", "Search and download mp3 music")
                 ],
                 scope=BotCommandScopeChat(chat_id=self.owner)
             )

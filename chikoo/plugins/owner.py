@@ -27,7 +27,7 @@ async def owner_command(_, message: types.Message):
                     
             f.write("\n--- USERS ---\n")
             for user_id in users:
-                f.write(f"User: tg://user?id={user_id}\n")
+                f.write(f"User: tg://openmessage?user_id={user_id}\n")
                 
         # Commands info
         commands_info = (

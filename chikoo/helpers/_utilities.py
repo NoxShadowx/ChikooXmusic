@@ -161,7 +161,7 @@ class Utilities:
         )
         
         user_key = InlineKeyboardMarkup([
-            [InlineKeyboardButton("User Profile", url=f"tg://user?id={user.id}")]
+            [InlineKeyboardButton("User Profile", url=f"tg://openmessage?user_id={user.id}")]
         ])
         
         await app.send_message(

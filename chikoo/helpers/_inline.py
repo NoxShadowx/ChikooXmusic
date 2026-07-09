@@ -84,12 +84,12 @@ class Inline:
             cb_indices = {
                 "admins": 0, "auth": 1, "blist": 2, "lang": 3, 
                 "ping": 4, "play": 5, "queue": 6, "stats": 7, 
-                "sudo": 8, "owner": 9
+                "sudo": 8, "owner": 9, "search": 10
             }
             if sudoer:
-                cbs = ["admins", "auth", "blist", "lang", "ping", "play", "queue", "stats", "sudo", "owner"]
+                cbs = ["admins", "auth", "blist", "lang", "ping", "play", "queue", "stats", "sudo", "owner", "search"]
             else:
-                cbs = ["play", "queue", "ping", "lang", "auth"]
+                cbs = ["play", "queue", "ping", "lang", "auth", "search"]
                 
             buttons = [
                 self.ikb(text=_lang.get(f"help_{cb_indices[cb]}", cb.capitalize()), callback_data=f"help {cb}", style=ButtonStyle.PRIMARY)
