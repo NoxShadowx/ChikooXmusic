@@ -119,6 +119,32 @@ class YouTube:
 
     async def search(self, query: str, m_id: int, video: bool = False) -> Track | None:
         try:
+            if self.valid(query):
+                import yt_dlp
+                import asyncio
+                
+                def extract_info():
+                    ydl_opts = {'quiet': True, 'skip_download': True}
+                    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                        return ydl.extract_info(query, download=False)
+                        
+                data = await asyncio.to_thread(extract_info)
+                if data:
+                    duration_sec = data.get("duration", 0)
+                    duration_str = f"{duration_sec // 60}:{duration_sec % 60:02d}"
+                    return Track(
+                        id=data.get("id"),
+                        channel_name=data.get("uploader", ""),
+                        duration=duration_str,
+                        duration_sec=duration_sec,
+                        message_id=m_id,
+                        title=data.get("title", "")[:25],
+                        thumbnail=data.get("thumbnail", ""),
+                        url=data.get("webpage_url", query),
+                        view_count=str(data.get("view_count", "")),
+                        video=video,
+                    )
+            
             _search = VideosSearch(query, limit=1)
             results = await _search.next()
             if results and results["result"]:
