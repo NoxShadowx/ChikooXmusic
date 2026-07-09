@@ -41,7 +41,10 @@ async def search_command(_, message: types.Message):
                 artists = ", ".join([a.get("name", "") for a in song["artists"]["primary"]])
             
             text += f"{idx + 1}. {name} - {artists}\n"
-            buttons.append([types.InlineKeyboardButton(f"{idx + 1}. {name}", callback_data=f"srch_dl_{idx}_{user_id}")])
+            button_text = f"{idx + 1}. {name} - {artists}"
+            if len(button_text) > 50:
+                button_text = button_text[:47] + "..."
+            buttons.append([types.InlineKeyboardButton(button_text, callback_data=f"srch_dl_{idx}_{user_id}")])
             
         buttons.append([types.InlineKeyboardButton("❌ Close", callback_data="help close")])
         
@@ -79,13 +82,26 @@ async def search_download_cb(_, query: types.CallbackQuery):
     
     await query.answer("Downloading and sending audio... Please wait.")
     
+    file_name = f"{name} - {artists}.m4a".replace("/", "_").replace("\\", "_").replace(":", "_")
+    
     try:
+        async with aiohttp.ClientSession() as session:
+            async with session.get(best_url) as resp:
+                if resp.status == 200:
+                    with open(file_name, "wb") as f:
+                        f.write(await resp.read())
+                else:
+                    return await query.message.reply_text("❌ Failed to download audio.")
+                    
         await query.message.reply_audio(
-            audio=best_url,
+            audio=file_name,
             title=name,
             performer=artists,
             caption=f"🎵 **{name}** - {artists}\n\nDownloaded via Airbeats API",
             quote=False
         )
+        import os
+        if os.path.exists(file_name):
+            os.remove(file_name)
     except Exception as e:
         await query.message.reply_text(f"❌ Failed to send audio: {str(e)}")
