@@ -50,11 +50,7 @@ async def search_command(_, message: types.Message):
                 button_text = button_text[:57] + "..."
             buttons.append([types.InlineKeyboardButton(button_text, callback_data=f"srch_dl_{idx}_{user_id}")])
             
-        buttons.append([types.InlineKeyboardButton("➕ More tracks", callback_data="help close")])
-        buttons.append([
-            types.InlineKeyboardButton("🔍", switch_inline_query_current_chat=""),
-            types.InlineKeyboardButton("↗️", switch_inline_query="")
-        ])
+
         buttons.append([types.InlineKeyboardButton("➕ Add to group", url=f"https://t.me/{app.me.username}?startgroup=true")])
         
         await sent.edit_text(
