@@ -18,7 +18,7 @@ async def search_command(_, message: types.Message):
         async with aiohttp.ClientSession() as session:
             async with session.get(
                 "https://api.airbeats.xyz/api/search/songs",
-                params={"query": query, "limit": 5}
+                params={"query": query, "limit": 8}
             ) as response:
                 if response.status != 200:
                     return await sent.edit_text("❌ Failed to fetch results from the API.")
@@ -33,20 +33,29 @@ async def search_command(_, message: types.Message):
         search_cache[user_id] = results
         
         buttons = []
-        text = f"**Search results for '{query}':**\n\n"
+        text = f"/search {query}"
         for idx, song in enumerate(results):
             name = song.get("name", "Unknown")
             artists = "Unknown"
             if "artists" in song and "primary" in song["artists"] and song["artists"]["primary"]:
-                artists = ", ".join([a.get("name", "") for a in song["artists"]["primary"]])
+                artists = " & ".join([a.get("name", "") for a in song["artists"]["primary"]])
             
-            text += f"{idx + 1}. {name} - {artists}\n"
-            button_text = f"{idx + 1}. {name} - {artists}"
-            if len(button_text) > 50:
-                button_text = button_text[:47] + "..."
+            if idx == 0 and song.get("duration"):
+                m, s = divmod(int(song["duration"]), 60)
+                button_text = f"• {m}:{s:02d} • {name} — {artists}"
+            else:
+                button_text = f"{name} — {artists}"
+                
+            if len(button_text) > 60:
+                button_text = button_text[:57] + "..."
             buttons.append([types.InlineKeyboardButton(button_text, callback_data=f"srch_dl_{idx}_{user_id}")])
             
-        buttons.append([types.InlineKeyboardButton("❌ Close", callback_data="help close")])
+        buttons.append([types.InlineKeyboardButton("➕ More tracks", callback_data="help close")])
+        buttons.append([
+            types.InlineKeyboardButton("🔍", switch_inline_query_current_chat=""),
+            types.InlineKeyboardButton("↗️", switch_inline_query="")
+        ])
+        buttons.append([types.InlineKeyboardButton("➕ Add to group", url=f"https://t.me/{app.me.username}?startgroup=true")])
         
         await sent.edit_text(
             text=text,
@@ -78,7 +87,7 @@ async def search_download_cb(_, query: types.CallbackQuery):
     name = song.get("name", "Audio")
     artists = "Unknown"
     if "artists" in song and "primary" in song["artists"] and song["artists"]["primary"]:
-        artists = ", ".join([a.get("name", "") for a in song["artists"]["primary"]])
+        artists = " & ".join([a.get("name", "") for a in song["artists"]["primary"]])
     
     await query.answer("Downloading and sending audio... Please wait.")
     
@@ -93,11 +102,24 @@ async def search_download_cb(_, query: types.CallbackQuery):
                 else:
                     return await query.message.reply_text("❌ Failed to download audio.")
                     
+        await query.message.reply_text(
+            "🤖 Want the same bot? Create your own — for free",
+            reply_markup=types.InlineKeyboardMarkup([[types.InlineKeyboardButton("Create your own bot", url=f"https://t.me/{app.me.username}")]])
+        )
+
+        reply_markup = types.InlineKeyboardMarkup([
+            [
+                types.InlineKeyboardButton("abc Lyrics", callback_data=f"lyrics_{idx}_{user_id}"),
+                types.InlineKeyboardButton("🔍", switch_inline_query_current_chat="")
+            ]
+        ])
+
         await query.message.reply_audio(
             audio=file_name,
             title=name,
             performer=artists,
-            caption=f"🎵 **{name}** - {artists}\n\nDownloaded via Airbeats API",
+            caption=f"@{app.me.username} | info",
+            reply_markup=reply_markup,
             quote=False
         )
         import os
