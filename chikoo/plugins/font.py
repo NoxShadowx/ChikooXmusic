@@ -18,18 +18,21 @@ async def font_command(_, message: types.Message):
     if not message.reply_to_message or not message.reply_to_message.text:
         return await message.reply_text("Please reply to a text message to convert its font!")
         
+    btn_smallcaps = "Small Caps".translate(SMALL_CAPS)
+    btn_aesthetic = "Aesthetic".translate(BOLD_AESTHETIC)
+
     buttons = [
         [
-            types.InlineKeyboardButton("Small Caps", callback_data="font_smallcaps", style=ButtonStyle.PRIMARY),
-            types.InlineKeyboardButton("Aesthetic", callback_data="font_aesthetic", style=ButtonStyle.SUCCESS)
+            types.InlineKeyboardButton(btn_smallcaps, callback_data="font_smallcaps", style=ButtonStyle.PRIMARY),
+            types.InlineKeyboardButton(btn_aesthetic, callback_data="font_aesthetic", style=ButtonStyle.SUCCESS)
         ],
         [
-            types.InlineKeyboardButton("Close", callback_data="help close", style=ButtonStyle.DANGER)
+            types.InlineKeyboardButton("⌯ 𝐂ʟσsє ⌯", callback_data="help close", style=ButtonStyle.DANGER)
         ]
     ]
     
     await message.reply_to_message.reply_text(
-        "**Select a font style below:**",
+        "<b>Select a font style below:</b>",
         reply_markup=types.InlineKeyboardMarkup(buttons)
     )
 
@@ -48,17 +51,20 @@ async def font_callback(_, query: types.CallbackQuery):
         converted = text.translate(BOLD_AESTHETIC)
         font_name = "Aesthetic"
         
+    btn_smallcaps = "Small Caps".translate(SMALL_CAPS)
+    btn_aesthetic = "Aesthetic".translate(BOLD_AESTHETIC)
+
     buttons = [
         [
-            types.InlineKeyboardButton("Small Caps", callback_data="font_smallcaps", style=ButtonStyle.PRIMARY),
-            types.InlineKeyboardButton("Aesthetic", callback_data="font_aesthetic", style=ButtonStyle.SUCCESS)
+            types.InlineKeyboardButton(btn_smallcaps, callback_data="font_smallcaps", style=ButtonStyle.PRIMARY),
+            types.InlineKeyboardButton(btn_aesthetic, callback_data="font_aesthetic", style=ButtonStyle.SUCCESS)
         ],
         [
-            types.InlineKeyboardButton("Close", callback_data="help close", style=ButtonStyle.DANGER)
+            types.InlineKeyboardButton("⌯ 𝐂ʟσsє ⌯", callback_data="help close", style=ButtonStyle.DANGER)
         ]
     ]
     
     await query.message.edit_text(
-        f"**{font_name}:**\n\n`{converted}`",
+        f"<b>{font_name}:</b>\n\n<code>{converted}</code>",
         reply_markup=types.InlineKeyboardMarkup(buttons)
     )
