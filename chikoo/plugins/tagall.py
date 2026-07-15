@@ -43,9 +43,9 @@ async def tag_all(_, message: types.Message):
             # Escape HTML characters so it doesn't break the parser
             name = html.escape(name)
             
-            # Use @username if available, otherwise fallback to HTML mention
+            # Use username as a link if available, otherwise fallback to HTML mention
             if member.user.username:
-                mention = f"@{member.user.username}"
+                mention = f"<a href='https://t.me/{member.user.username}'>{name}</a>"
             else:
                 mention = f"<a href='tg://user?id={member.user.id}'>{name}</a>"
                 
@@ -62,7 +62,7 @@ async def tag_all(_, message: types.Message):
         
     if chat_id in active_tags:
         del active_tags[chat_id]
-        await message.reply_text("Tagging completed.")
+        await message.reply_text("Tagging completed.\n\nDeveloper: @nox_shadowx")
 
 
 @app.on_message(filters.command(["cancel", "stoptag"]) & filters.group & ~app.bl_users)
