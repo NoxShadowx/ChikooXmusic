@@ -17,7 +17,7 @@ from py_yt import VideosSearch, Playlist
 import aiohttp
 
 API_URL = os.environ.get("MEOW_API_URL", "https://music.yukiapi.site")
-API_KEY = os.environ.get("MEOW_API_KEY", "YOUR_API_KEY") # 🔑 Get Key: @MeowApiRobot On Telegram 
+API_KEY = os.environ.get("MEOW_API_KEY", "yuki_4e247d221eec6dbe158c9683c46bfa36") # 🔑 Get Key: @MeowApiRobot On Telegram 
 
 DOWNLOAD_DIR = "downloads"
 
