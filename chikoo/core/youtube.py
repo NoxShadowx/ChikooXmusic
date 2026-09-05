@@ -7,9 +7,9 @@ from py_yt import VideosSearch, Playlist
 from chikoo import logger, config
 from chikoo.helpers import Track, utils
 
-API_URL = os.environ.get("SHRUTI_API_URL", "https://api.shrutibots.site")
+API_URL = os.environ.get("SHRUTI_API_URL", "https://music.yukiapi.site/")
 
-API_KEY = os.environ.get("SHRUTI_API_KEY", "ShrutiBotsrbMgW4iant3n08lA59xB") ## Get This API KEY FROM TELEGRAM BOT USERNAME: @SHRUTIAPIBOT
+API_KEY = os.environ.get("SHRUTI_API_KEY", "yuki_4e247d221eec6dbe158c9683c46bfa36") ## Get This API KEY FROM TELEGRAM BOT USERNAME: @SHRUTIAPIBOT
 
 DOWNLOAD_DIR = "downloads"
 
