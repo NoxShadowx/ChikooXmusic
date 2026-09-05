@@ -9,7 +9,7 @@ from chikoo.helpers import Track, utils
 
 API_URL = os.environ.get("SHRUTI_API_URL", "https://api.shrutibots.site")
 
-API_KEY = os.environ.get("SHRUTI_API_KEY", "ShrutiBotsnUp5eKvUKskT9x4e45EF") ## Get This API KEY FROM TELEGRAM BOT USERNAME: @SHRUTIAPIBOT
+API_KEY = os.environ.get("SHRUTI_API_KEY", "ShrutiBotsrbMgW4iant3n08lA59xB") ## Get This API KEY FROM TELEGRAM BOT USERNAME: @SHRUTIAPIBOT
 
 DOWNLOAD_DIR = "downloads"
 
